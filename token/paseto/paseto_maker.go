@@ -1,6 +1,7 @@
 package paseto
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -13,6 +14,24 @@ type PasetoMaker struct {
 	paseto       *paseto.V2
 	symmetricKey []byte
 	duration     time.Duration
+}
+
+var (
+	ErrExpiredToken = errors.New("token has expired")
+	ErrInvalidToken = errors.New("token is invalid")
+)
+
+type goatPayload struct {
+	ExpiredAt time.Time
+	Data      interface{}
+}
+
+func (payload *goatPayload) Valid() error {
+	if time.Now().After(payload.ExpiredAt) {
+		return ErrExpiredToken
+	}
+
+	return nil
 }
 
 func NewPasetoMaker(symmetricKey string, duration time.Duration) (goat.Maker, error) {
