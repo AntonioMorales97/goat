@@ -34,7 +34,7 @@ func (payload *pasetoPayload) Valid() error {
 	return nil
 }
 
-func NewPasetoMaker(symmetricKey string, duration time.Duration) (goat.Maker, error) {
+func NewPasetoMaker(symmetricKey string, duration time.Duration) (goat.TokenMaker, error) {
 	if len(symmetricKey) != chacha20poly1305.KeySize {
 		return nil, fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize)
 	}
