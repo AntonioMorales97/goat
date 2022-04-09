@@ -21,12 +21,12 @@ var (
 	ErrInvalidToken = errors.New("token is invalid")
 )
 
-type goatPayload struct {
+type pasetoPayload struct {
 	ExpiredAt time.Time
 	Data      interface{}
 }
 
-func (payload *goatPayload) Valid() error {
+func (payload *pasetoPayload) Valid() error {
 	if time.Now().After(payload.ExpiredAt) {
 		return ErrExpiredToken
 	}
@@ -49,24 +49,24 @@ func NewPasetoMaker(symmetricKey string, duration time.Duration) (goat.Maker, er
 }
 
 func (maker *PasetoMaker) Encrypt(payload interface{}) (string, error) {
-	goatPayload := &goatPayload{
+	pasetoPayload := &pasetoPayload{
 		ExpiredAt: time.Now().Add(maker.duration),
 		Data:      payload,
 	}
-	return maker.paseto.Encrypt(maker.symmetricKey, goatPayload, nil)
+	return maker.paseto.Encrypt(maker.symmetricKey, pasetoPayload, nil)
 }
 
 func (maker *PasetoMaker) VerifyToken(token string, payload interface{}) error {
-	goatPayload := &goatPayload{
+	pasetoPayload := &pasetoPayload{
 		Data: payload,
 	}
 
-	err := maker.paseto.Decrypt(token, maker.symmetricKey, goatPayload, nil)
+	err := maker.paseto.Decrypt(token, maker.symmetricKey, pasetoPayload, nil)
 	if err != nil {
 		return ErrInvalidToken
 	}
 
-	err = goatPayload.Valid()
+	err = pasetoPayload.Valid()
 	if err != nil {
 		return err
 	}
