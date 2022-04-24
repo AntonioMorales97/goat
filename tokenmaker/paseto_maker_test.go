@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/AntonioMorales97/goat"
 	"github.com/stretchr/testify/require"
 )
 
@@ -61,7 +62,7 @@ func TestExpiredPasetoToken(t *testing.T) {
 	err = maker.VerifyToken(token, payload)
 
 	require.Error(t, err)
-	require.EqualError(t, err, ErrExpiredToken.Error())
+	require.EqualError(t, err, goat.ErrExpiredToken.Error())
 }
 
 func TestPasetoTokenWithDifferentMaker(t *testing.T) {
@@ -83,5 +84,5 @@ func TestPasetoTokenWithDifferentMaker(t *testing.T) {
 	err = maker.VerifyToken(token, payload)
 
 	require.Error(t, err)
-	require.EqualError(t, err, ErrInvalidToken.Error())
+	require.EqualError(t, err, goat.ErrInvalidToken.Error())
 }
