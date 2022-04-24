@@ -1,4 +1,4 @@
-package paseto
+package tokenmaker
 
 import (
 	"testing"
