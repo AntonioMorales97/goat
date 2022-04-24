@@ -1,8 +1,8 @@
 package goat
 
 type Goat struct {
-	tokenMaker TokenMaker
-	tokenStore TokenStore
+	TokenMaker TokenMaker
+	TokenStore TokenStore
 }
 
 func NewGoat(tokenMaker TokenMaker, tokenStore TokenStore) *Goat {
