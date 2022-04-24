@@ -1,5 +1,11 @@
 package goat
 
+import "errors"
+
+var (
+	NoTokenFound = errors.New("no token found for the given token id")
+)
+
 type TokenStore interface {
 	// Stores the given token with the token id
 	StoreToken(tokenId string, token string)

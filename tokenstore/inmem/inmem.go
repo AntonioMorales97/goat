@@ -1,7 +1,6 @@
 package inmem
 
 import (
-	"errors"
 	"sync"
 
 	"github.com/AntonioMorales97/goat"
@@ -18,6 +17,7 @@ func NewInmemStore() goat.TokenStore {
 	inmemStorage := &InmemStorage{
 		blockedTokens: make(map[string]bool),
 		cachedTokens:  make(map[string]string),
+		blockMutex:    &sync.RWMutex{},
 		cacheMutex:    &sync.RWMutex{},
 	}
 
@@ -34,7 +34,7 @@ func (inmemStorage *InmemStorage) StoreToken(tokenId string, token string) {
 func (inmemStorage *InmemStorage) GetToken(tokenId string) (string, error) {
 	accessToken, ok := inmemStorage.cachedTokens[tokenId]
 	if !ok {
-		return "", errors.New("no token found for the given token id")
+		return "", goat.NoTokenFound
 	}
 
 	return accessToken, nil
